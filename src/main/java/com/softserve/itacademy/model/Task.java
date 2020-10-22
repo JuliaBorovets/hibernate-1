@@ -34,7 +34,6 @@ public class Task {
     private Priority priority;
 
     @ManyToOne
-    @JoinColumn(name = "state_id")
     private State state;
 
     @ManyToOne
