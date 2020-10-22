@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tasks")
@@ -26,18 +26,20 @@ public class Task {
     private Long id;
 
     @NotBlank(message = "The taskName cannot be empty.")
-    @Column(nullable = false, name = "name")
+    @Column(nullable = false)
     @Length(min = 3, max = 200)
     private String name;
 
-    @Column(name = "priority")
+    @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    @Column(name = "state_id")
-    private Long stateId;
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
 
-    @Column(name = "todo_id")
-    private Long todoId;
+    @ManyToOne
+    @JoinColumn(name = "todo_id")
+    private ToDo toDo;
 
     public Task() {
     }
@@ -62,19 +64,56 @@ public class Task {
         this.priority = priority;
     }
 
-    public Long getStateId() {
-        return stateId;
+    public State getState() {
+        return state;
     }
 
-    public void setStateId(Long stateId) {
-        this.stateId = stateId;
+    public void setState(State state) {
+        this.state = state;
     }
 
-    public Long getTodoId() {
-        return todoId;
+    public ToDo getToDo() {
+        return toDo;
     }
 
-    public void setTodoId(Long todoId) {
-        this.todoId = todoId;
+    public void setToDo(ToDo toDo) {
+        this.toDo = toDo;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priority=" + priority +
+                ", state=" + state +
+                ", toDo=" + toDo +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) &&
+                priority == task.priority && Objects.equals(state, task.state) &&
+                Objects.equals(toDo, task.toDo);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((priority == null) ? 0 : priority.hashCode());
+        result = prime * result + ((state == null) ? 0 : state.hashCode());
+        result = prime * result + ((toDo == null) ? 0 : toDo.hashCode());
+        return result;
     }
 }
