@@ -27,6 +27,7 @@ public class State {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "state")
     private List<Task> tasks = new ArrayList<>();
 
     public State() {
