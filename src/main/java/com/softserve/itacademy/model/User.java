@@ -28,22 +28,30 @@ public class User {
     )
     private Long id;
 
+    @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
     @Column(nullable = false, unique = true, name = "email")
     private String email;
 
+    @Pattern(regexp = "[A-Z][a-z]+(-[A-Z][a-z]+)?")
+    @NotNull
     @Column(nullable = false, name = "first_name")
     private String firstName;
 
+    @Pattern(regexp = "[A-Z][a-z]+(-[A-Z][a-z]+)?")
+    @NotNull
     @Column(nullable = false, name = "last_name")
     private String lastName;
 
+    @Pattern(regexp = "[1-9A-Za-z!%@*]{8,20}", message = "Invalid password!")
+    @NotBlank(message = "Can't be empty")
     @Column(nullable = false, name = "password")
     private String password;
 
+    @NotNull(message = "Role can not be null!")
     @ManyToOne
     private Role role;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "owner")
     private List<ToDo> toDoList;
 
     public User() {
@@ -51,10 +59,6 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -95,44 +99,6 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
-        if (!Objects.equals(id, user.id)) return false;
-        if (!Objects.equals(email, user.email)) return false;
-        if (!Objects.equals(firstName, user.firstName)) return false;
-        if (!Objects.equals(lastName, user.lastName)) return false;
-        if (!Objects.equals(password, user.password)) return false;
-        return Objects.equals(role, user.role);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
     }
 }
 

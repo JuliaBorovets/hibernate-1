@@ -3,6 +3,9 @@ package com.softserve.itacademy.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +27,8 @@ public class State {
     )
     private Long id;
 
+    @NotNull
+    @Pattern(regexp = "[A-Za-z0-9\\-_ ]{1,20}")
     @Column(unique = true, nullable = false)
     private String name;
 
@@ -35,10 +40,6 @@ public class State {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -57,28 +58,4 @@ public class State {
         this.tasks = tasks;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof State)) return false;
-
-        State state = (State) o;
-
-        if (!Objects.equals(id, state.id)) return false;
-        if (!Objects.equals(name, state.name)) return false;
-        return Objects.equals(tasks, state.tasks);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (tasks != null ? tasks.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "State{" + "id=" + id + ", name='" + name + '}';
-    }
 }
