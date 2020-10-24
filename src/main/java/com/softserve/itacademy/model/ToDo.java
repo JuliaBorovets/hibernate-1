@@ -35,10 +35,6 @@ public class ToDo {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
-
     @OneToMany(mappedBy = "toDo", cascade = CascadeType.REMOVE)
     private List<Task> tasks;
 
@@ -47,6 +43,12 @@ public class ToDo {
             joinColumns = @JoinColumn(name = "todo_id"),
             inverseJoinColumns = @JoinColumn(name = "collaborator_id"))
     private List<User> collaborators;
+
+
+    @ManyToOne
+    @JoinColumn(name="owner_id")
+    private User owner;
+
 
     public ToDo() {
     }

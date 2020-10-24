@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,16 +31,20 @@ public class User {
     @Column(nullable = false, unique = true, name = "email")
     private String email;
 
-    @Column(name = "first_name")
+    @Column(nullable = false, name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(nullable = false, name = "last_name")
     private String lastName;
 
-    @Column(name = "password")
+    @Column(nullable = false, name = "password")
     private String password;
-    
+
+    @ManyToOne
     private Role role;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    private List<ToDo> toDoList;
 
     public User() {
     }
